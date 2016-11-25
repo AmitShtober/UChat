@@ -6,6 +6,11 @@ var MainChatContainer = require('../containers/MainChatContainer');
 var LeftBoxes = require('../components/LeftBoxes');
 
 class Main extends React.Component {
+    
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
                 <div className="row">
@@ -13,7 +18,7 @@ class Main extends React.Component {
                         <MainChatContainer roomName={this.props.params.roomName} />
                     </div>
                     <div className="col-md-4 col-md-pull-8" style={{marginBottom: 20 + 'px' }}>
-                        <LeftBoxes/>
+                        <LeftBoxes roomName={this.props.params.roomName} />
                     </div>
                 </div>
         )

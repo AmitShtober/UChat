@@ -19,7 +19,7 @@ class MembersBoxContainer extends React.Component {
 	}
 	
     componentDidMount (s,d){
-		serverHelpers.registerToRoom("lobby", this.updataData);
+		serverHelpers.registerToRoom(this.props.roomName, this.updataData);
     }
 
 	render() {
