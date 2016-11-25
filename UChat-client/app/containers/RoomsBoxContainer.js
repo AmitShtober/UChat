@@ -1,9 +1,9 @@
 var React = require('react');
-var CountableBox = require('../../components/Base/CountableBox');
-var Room = require('../../components/Rooms/Room');
-var serverHelpers = require('../../utils/serverHelpers');
-var RoomsBox = require('../../components/Rooms/RoomsBox');
-var localStorageHelpers = require('../../utils/localStorageHelpers');
+var CountableBox = require('../components/Base/CountableBox');
+var Room = require('../components/Rooms/Room');
+var serverHelpers = require('../utils/serverHelpers');
+var RoomsBox = require('../components/Rooms/RoomsBox');
+var localStorageHelpers = require('../utils/localStorageHelpers');
 
 class RoomsBoxContainer extends React.Component {
     constructor(props) {
