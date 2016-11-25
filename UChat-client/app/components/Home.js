@@ -4,7 +4,7 @@ var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
 var MainChatContainer = require('../containers/MainChatContainer');
 var LeftBoxes = require('../components/LeftBoxes');
-var localStorageHelpers = require('../utils/localStorageHelpers');
+var localStorageHelpers = require('../utils/localStorageHelpersMock');
 
 class Home extends React.Component {
     render() {

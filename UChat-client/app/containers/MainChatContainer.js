@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var ReactRouter = require('react-router');
 var MainChat = require('../components/Chat/MainChat');
-var localStorageHelpers = require('../utils/localStorageHelpers');
+var localStorageHelpers = require('../utils/localStorageHelpersMock');
 var serverHelpers = require('../utils/serverHelpers');
 
 class MainChatContainer extends React.Component {

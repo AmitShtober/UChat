@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 var Router = require('react-router');
-var localStorageHelpers = require('../utils/localStorageHelpers');
+var localStorageHelpers = require('../utils/localStorageHelpersMock');
 var serverHelpers = require('../utils/serverHelpers');
 
 class PickName extends React.Component {
@@ -44,12 +44,6 @@ class PickName extends React.Component {
                             </div>
             )
         }
-
-    // componentWillMount(prevProps, prevState){
-    //     if(localStorageHelpers.isUserLogged()) {
-    //         this.context.router.push('/room/lobby');
-    //     }
-    // }
     
     handleNicknameChanged(event) {
         this.setState({ nickname: event.target.value });

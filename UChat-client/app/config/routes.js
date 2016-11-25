@@ -4,7 +4,7 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var hashHistory = ReactRouter.hashHistory;
-var localStorageHelpers = require('../utils/localStorageHelpers');
+var localStorageHelpers = require('../utils/localStorageHelpersMock');
 
 var Home = require('../components/Home');
 var Main = require('../components/Main');
