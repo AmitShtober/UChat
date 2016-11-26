@@ -26,6 +26,10 @@ app.get('/api/rooms', function(req, res){
   res.send(serverData.rooms);
 });
 
+app.get('/api/members/:roomName', function(req, res){
+  res.send(serverData.roomsToClients[req.params["roomName"]]);
+});
+
 var server = app.listen(port, function () {
   var host = server.address().address
   var port = server.address().port
