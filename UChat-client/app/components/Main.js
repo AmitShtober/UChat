@@ -9,19 +9,28 @@ class Main extends React.Component {
     
     constructor(props) {
         super(props);
+        this.state = {currentRoomName:this.props.params.roomName}
     }
 
     render() {
         return (
                 <div className="row">
                     <div className="col-md-8 col-md-push-4" >
-                        <MainChatContainer roomName={this.props.params.roomName} />
+                        <MainChatContainer roomName={this.state.currentRoomName} />
                     </div>
                     <div className="col-md-4 col-md-pull-8" style={{marginBottom: 20 + 'px' }}>
-                        <LeftBoxes roomName={this.props.params.roomName} />
+                        <LeftBoxes roomName={this.state.currentRoomName} />
                     </div>
                 </div>
         )
+    }
+
+    componentWillReceiveProps(nextProps) {
+        var newRoom = nextProps.params.roomName;
+        // show the notification only when you really moved from one room to another
+        if (newRoom != this.state.roomName) {
+            this.setState({currentRoomName:newRoom});
+        }
     }
 }
 

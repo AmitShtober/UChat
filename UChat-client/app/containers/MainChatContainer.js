@@ -36,7 +36,7 @@ class MainChatContainer extends React.Component {
     updataData(data) {
 
         if (data.action == "new_message") {
-            
+
             var side = "left";
             if (data.data.nickName == localStorageHelpers.getUser().user_nickname) {
                 side = "right";
@@ -84,9 +84,10 @@ class MainChatContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         var oldRoom = this.state.roomName;
+        var newRoom = nextProps.roomName;
         serverHelpers.unRegisterToRoom(oldRoom, this.updataData);
-        this.setState({roomName:nextProps.roomName});
-        serverHelpers.registerToRoom(nextProps.roomName, this.updataData);
+        this.setState({roomName:newRoom,  messages:[]});
+        serverHelpers.registerToRoom(newRoom, this.updataData);
     } 
 }
 

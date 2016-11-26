@@ -24,11 +24,11 @@ class RoomsBoxContainer extends React.Component {
     }
 
     render() {
-
         return (
             <RoomsBox
                 rooms={this.state.rooms}
                 newRoomName={this.state.newRoomName}
+                currentRoomName={this.props.roomName}
                 onRoomNameChanged={this.handleNameChanged}
                 newRoomDescription={this.state.newRoomDescription}
                 onRoomDescriptionChanged={this.handleDescriptionChanged}
