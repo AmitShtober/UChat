@@ -34,9 +34,9 @@ class MainChatContainer extends React.Component {
     }
 
     updataData(data) {
-        
+
         if (data.action == "new_message") {
-            console.log(data);
+            
             var side = "left";
             if (data.data.nickName == localStorageHelpers.getUser().user_nickname) {
                 side = "right";
