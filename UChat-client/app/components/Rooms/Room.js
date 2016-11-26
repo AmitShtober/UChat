@@ -10,13 +10,15 @@ class RoomsBox extends React.Component {
 
     render() {
             if(this.props.currentRoomName != undefined && this.props.currentRoomName == this.props.text){
-                return (<li> {this.props.currentRoomName}
+                return (
+                <li> 
                     {this.props.text} ({this.props.description})
                 </li>);
             } else {
-                return (<li>
+                return (
+                <li>
                     <Link to={`/room/${this.props.text}`}>{this.props.text} ({this.props.description})</Link>
-                 </li>);
+                </li>);
             }
     }
 
