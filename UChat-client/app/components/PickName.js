@@ -30,14 +30,14 @@ class PickName extends React.Component {
                                     type="text"
                                     value={this.state.nickname}
                                     onChange={this.handleNicknameChanged}
-                                    className="form-control" id="usr" />
+                                    className="form-control" style={{border:0}} id="usr" />
                                 </div>
                                 <div className="form-group">
                                     <label style={{fontSize:18+'px', color:'white'}}>Couple of words about you:</label>
                                     <input type="text"
                                     value={this.state.description}
                                     onChange={this.handleDescriptionChange}
-                                    className="form-control" id="pwd" />
+                                    className="form-control" style={{border:0}} id="pwd" />
                                 </div>
                                 <button type="submit" onClick={this.handleSubmit} className="btn btn-default">Let's Chat!</button>
                                 </form>
