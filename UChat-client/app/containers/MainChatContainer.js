@@ -87,6 +87,7 @@ class MainChatContainer extends React.Component {
         var newRoom = nextProps.roomName;
         serverHelpers.unRegisterToRoom(oldRoom, this.updataData);
         this.setState({roomName:newRoom,  messages:[]});
+        serverHelpers.enterRoom(localStorageHelpers.getUser().user_nickname,newRoom, oldRoom);
         serverHelpers.registerToRoom(newRoom, this.updataData);
     } 
 }
