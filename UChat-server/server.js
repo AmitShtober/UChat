@@ -3,7 +3,7 @@ var path = require('path');
 var cors = require('cors');
 var port = process.env.PORT || 1337;
 var bodyParser = require('body-parser');
-var serverData = require('./serverHandlers/serverData')
+var dbWrapper = require('./serverHandlers/dbWrapper')
 var app = express();
 
 app.use(cors({
@@ -17,13 +17,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/api/createRoom', function(req, res){
   var roomName = req.body.name;
   var roomDescription = req.body.description;
-  serverData.rooms.push({name:roomName, description:roomDescription});
+  dbWrapper.addRoom(roomName, roomDescription);
   console.log(`New room was added: ${roomName}, description: ${roomDescription}`);
   res.send('Room was added successfully');
 });
 
 app.get('/api/rooms', function(req, res){
-  res.send(serverData.rooms);
+  res.send(dbWrapper.getRooms());
 });
 
 app.get('/api/members/:roomName', function(req, res){

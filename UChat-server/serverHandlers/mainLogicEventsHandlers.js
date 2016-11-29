@@ -1,5 +1,5 @@
 var underscore = require('underscore');
-var serverData = require('./serverData');
+var dbWrapper = require('./dbWrapper');
 
 var mainLogicEventsHandlers = function (server) {
 
@@ -7,8 +7,8 @@ var mainLogicEventsHandlers = function (server) {
 
     io.sockets.on('connection', function (socket) {
 
-        socket.on('created_room', function(data){
-            console.log(data);
+        socket.on('created_room', function (data) {
+
             io.sockets.emit("new_room",
                 {
                     name: data["name"],
@@ -24,17 +24,22 @@ var mainLogicEventsHandlers = function (server) {
             var roomName = data["roomName"];
             var oldRoomName = data["oldRoomName"]
 
+            console.log(`on: enter_room | ${nickName}, roomname: ${roomName}, oldroomname: ${oldRoomName}`);
+
             // if the current user is moving out from an old room we will remove him.
             if (oldRoomName != '') {
-                removeClientFromSpesificRoom(nickName, oldRoomName);
+                dbWrapper.removeClientFromRoom(nickName, oldRoomName);
             }
 
-            serverData.clients[socket.id] = nickName;
-            var currentClient = serverData.clients[socket.id];
-            serverData.roomsToClients[roomName].push(currentClient);
+            dbWrapper.addClient(socket.id, nickName);
+            dbWrapper.addClientToRoom(roomName, dbWrapper.getClientNickName(socket.id));
 
             // publish the change to the users
-            emitChangeInRoom(roomName, "user_added", serverData.roomsToClients[roomName]);
+            emitChangeInRoom(roomName, "user_added", dbWrapper.getRoom(roomName).clients);
+
+            if (oldRoomName != '') {
+                emitChangeInRoom(oldRoomName, "user_left", dbWrapper.getRoom(oldRoomName).clients);
+            }
         });
 
         // Occurs when a new message is being sent in a chat-room
@@ -49,8 +54,6 @@ var mainLogicEventsHandlers = function (server) {
 
             var messageData = { nickName: nickName, message: message, timestamp: timestamp };
 
-            console.info(action + " Nickname:" + nickName + ", RoomName:" + roomName + ", Message:" + message + ", timestamp:" + timestamp)
-
             io.sockets.emit("room_" + roomName,
                 {
                     action: action,
@@ -62,18 +65,16 @@ var mainLogicEventsHandlers = function (server) {
 
         // when user leave the chat (occurs also on refresh!!)
         socket.on('disconnect', function () {
-            var currentClient = serverData.clients[socket.id];
-            delete serverData.clients[socket.id];
-            var roomName = removeClientFromUnknownRoom(currentClient);
+            var currentClient = dbWrapper.getClientNickName(socket.id);
+            dbWrapper.removeClient(socket.id)
+            var roomName = dbWrapper.removeClientFromUnknownRoom(currentClient);
             if (roomName != 0) {
                 emitChangeInRoom(roomName, "user_left", serverData.roomsToClients[roomName]);
             }
-            console.info("disconnect, current users :" + Object.keys(serverData.clients).length)
         });
 
         // publish the change which occur to the users, according to the relevant room
         function emitChangeInRoom(roomName, action, data) {
-            console.info(roomName + " " + action + " " + data);
             io.sockets.emit("room_" + roomName,
                 {
                     action: action,
@@ -82,23 +83,6 @@ var mainLogicEventsHandlers = function (server) {
             );
         }
 
-
-        function removeClientFromSpesificRoom(nickName, roomName) {
-            serverData.roomsToClients[roomName] = _.without(serverData.roomsToClients[roomName], nickName);
-        }
-
-        // self-explaing: remove a client from an unknown room
-        // returns: the ROOM name
-        function removeClientFromUnknownRoom(nickName) {
-            // remove from unknown room
-            for (var key in serverData.roomsToClients) {
-                if (underscore._.contains(serverData.roomsToClients[key], nickName)) {
-                    serverData.roomsToClients[key] = underscore._.without(serverData.roomsToClients[key], nickName);
-                    return key;
-                }
-            }
-            return 0;
-        }
 
     });
 }
