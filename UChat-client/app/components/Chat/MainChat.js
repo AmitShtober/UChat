@@ -3,6 +3,8 @@ var ReactDom = require('react-dom');
 var ReactRouter = require('react-router');
 var MainChatMessages = require('../../components/Chat/MainChatMessages');
 var Box = require('../../components/Base/Box');
+var NotificationContainer = require('react-notifications').NotificationContainer;
+var NotificationManager = require('react-notifications').NotificationManager
 
 class MainChat extends React.Component {
 
@@ -30,8 +32,18 @@ class MainChat extends React.Component {
                         </div>
                     </form>
                 </div>
+                <NotificationContainer/>
             </Box>
         )
+    }
+
+    componentWillReceiveProps(nextProps) {
+        
+        var newRoom = nextProps.roomName;
+        // show the notification only when you really moved from one room to another
+        if (newRoom != this.props.roomName) {
+            NotificationManager.warning(':)', `Welcome to "${newRoom}"`);
+        }
     }
 
     scrollElement() {

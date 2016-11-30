@@ -8,8 +8,8 @@ class LeftBoxes extends React.Component {
     render () {
         return (
             <div>
-                <MembersBoxContainer />
-                <RoomsBoxContainer />
+                <MembersBoxContainer roomName={this.props.roomName} />
+                <RoomsBoxContainer roomName={this.props.roomName} />
             </div>
         )
     }

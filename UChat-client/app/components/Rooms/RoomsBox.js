@@ -12,10 +12,11 @@ class RoomsBox extends React.Component {
     render() {
 
         var i = 0;
-
+        var currentRoomName = this.props.currentRoomName;
+        
         var rooms = this.props.rooms.sort(function (r1, r2) {
             return ((r1.name).localeCompare(r2.name));
-        }).map((item) => <Room key={i++} text={item.name} description={item.description} />);
+        }).map((item) => <Room key={i++} text={item.name} description={item.description} currentRoomName={currentRoomName} />);
 
         var roomsCount = rooms.length;
         

@@ -1,8 +1,8 @@
-var io = require('socket.io-client');
 require('fs');
+require('whatwg-fetch');
+var io = require('socket.io-client');
 var rest = require('restler');
 var socketio;
-import 'whatwg-fetch'
 
 var serverHelpers = {
   connect: function (callback) {
@@ -20,7 +20,9 @@ var serverHelpers = {
     }
   },
   enterRoom: function (currentUserNickName, roomName, oldRoomName) {
-    socketio.emit("enter_room", { nickname: currentUserNickName, roomName: roomName, oldRoomName: oldRoomName });
+    if (socketio != undefined) {
+      socketio.emit("enter_room", { nickname: currentUserNickName, roomName: roomName, oldRoomName: oldRoomName });
+    }
   },
 
   registerToRoom: function (roomName, func) {
@@ -36,8 +38,10 @@ var serverHelpers = {
   },
 
   sendMessage: function (roomName, nickName, message, timestamp) {
-    socketio.emit("send_message",
-      { nickname: nickName, roomName: roomName, message: message, timestamp: timestamp });
+    if (socketio != undefined) {
+      socketio.emit("send_message",
+        { nickname: nickName, roomName: roomName, message: message, timestamp: timestamp });
+    }
   },
 
   addRoom: function (room, callback) {
@@ -58,7 +62,7 @@ var serverHelpers = {
     fetch('http://localhost:1337/api/rooms')
       .then(status)
       .then(json)
-      .then(function(data){
+      .then(function (data) {
         callback(data);
       });
   }

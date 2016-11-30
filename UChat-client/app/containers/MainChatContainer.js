@@ -15,15 +15,17 @@ class MainChatContainer extends React.Component {
 
         this.state =
             {
+                roomName : this.props.roomName,
                 newMessage: "",
                 messages: []
             };
     }
 
     render() {
+        
         return (
             <MainChat
-                roomName={this.props.roomName}
+                roomName={this.state.roomName}
                 onMessageSubmit={this.handleMessageSubmit}
                 onMessageChanged={this.handleMessageChanged}
                 newMessage={this.state.newMessage}
@@ -32,8 +34,9 @@ class MainChatContainer extends React.Component {
     }
 
     updataData(data) {
+
         if (data.action == "new_message") {
-            console.log(data);
+
             var side = "left";
             if (data.data.nickName == localStorageHelpers.getUser().user_nickname) {
                 side = "right";
@@ -45,7 +48,6 @@ class MainChatContainer extends React.Component {
             allMessages.push(message);
 
             this.setState({
-                newMessage: "",
                 messages: allMessages
             });
         }
@@ -57,30 +59,37 @@ class MainChatContainer extends React.Component {
 
     handleMessageSubmit(event) {
         event.preventDefault();
-        console.log("asd");
+
         var newMessage = this.state.newMessage;
 
         if (newMessage == '') {
             alert('The message is empty!');
             return;
         }
-        serverHelpers.sendMessage(this.props.roomName, localStorageHelpers.getUser().user_nickname, newMessage, new Date().toLocaleString());
+
+        serverHelpers.sendMessage(this.state.roomName, localStorageHelpers.getUser().user_nickname, newMessage, new Date().toLocaleString());
+
+          this.setState({
+                newMessage: "",
+            });
     }
 
-    // routeToPickNameIfNotLogged() {
-    //     if (!localStorageHelpers.isUserLogged()) {
-    //         this.context.router.push('/');
-    //     }
-    // }
-
     componentDidMount(s, d) {
-        serverHelpers.registerToRoom("lobby", this.updataData);
+        serverHelpers.registerToRoom(this.state.roomName, this.updataData);
     }
 
     componentWillUnmount(s, d) {
-        serverHelpers.unRegisterToRoom("lobby", this.updataData);
+        serverHelpers.unRegisterToRoom(this.state.roomName, this.updataData);
     }
 
+    componentWillReceiveProps(nextProps) {
+        var oldRoom = this.state.roomName;
+        var newRoom = nextProps.roomName;
+        serverHelpers.unRegisterToRoom(oldRoom, this.updataData);
+        this.setState({roomName:newRoom,  messages:[]});
+        serverHelpers.enterRoom(localStorageHelpers.getUser().user_nickname,newRoom, oldRoom);
+        serverHelpers.registerToRoom(newRoom, this.updataData);
+    } 
 }
 
 MainChatContainer.contextTypes = {
