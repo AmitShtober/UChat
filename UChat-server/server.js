@@ -3,32 +3,16 @@ var path = require('path');
 var cors = require('cors');
 var port = process.env.PORT || 1337;
 var bodyParser = require('body-parser');
-var dbWrapper = require('./serverHandlers/dbWrapper')
-var app = express();
 
+var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(cors({
     origin: true,
     credentials: true
 }));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); 
-
-app.post('/api/createRoom', function(req, res){
-  var roomName = req.body.name;
-  var roomDescription = req.body.description;
-  dbWrapper.addRoom(roomName, roomDescription);
-  console.log(`New room was added: ${roomName}, description: ${roomDescription}`);
-  res.send('Room was added successfully');
-});
-
-app.get('/api/rooms', function(req, res){
-  res.send(dbWrapper.getRooms());
-});
-
-app.get('/api/members/:roomName', function(req, res){
-  res.send(serverData.roomsToClients[req.params["roomName"]]);
-});
+require('./routes/roomsRoutes')(app);
 
 var server = app.listen(port, function () {
   var host = server.address().address
@@ -36,7 +20,7 @@ var server = app.listen(port, function () {
   console.log("\n\tUltraChat Server!\n\tlistening at http://%s:%s", host, port)
 }); 
 
-require("./serverHandlers/mainLogicEventsHandlers")(server);
+require("./serverHandlers/eventsHandlers")(server);
 
 
 
