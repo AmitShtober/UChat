@@ -53,17 +53,21 @@ class dbWrapper {
     // self-explaing: remove a client from an unknown room
     // returns: the ROOM name
     removeClientFromUnknownRoom(nickName) {
+
+        // 0 if not found
+        var roomNameFound = 0;
+
         // remove from unknown room
         this.rooms.forEach(function (item) {
             if (_.contains(item.clients, nickName)) {
                 console.log("before:" + item.clients.length);
                 item.clients = _.without(item.clients, nickName);
                 console.log("after:" + item.clients.length);
-                return item.roomName;
+                roomNameFound =  item.roomName;
             }
         });
 
-        return 0;
+        return roomNameFound;
     }
 
     isClientExists(nickname) {

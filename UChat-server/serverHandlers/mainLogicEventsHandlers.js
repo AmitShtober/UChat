@@ -69,7 +69,7 @@ var mainLogicEventsHandlers = function (server) {
             dbWrapper.removeClient(socket.id)
             var roomName = dbWrapper.removeClientFromUnknownRoom(currentClient);
             if (roomName != 0) {
-                emitChangeInRoom(roomName, "user_left", serverData.roomsToClients[roomName]);
+                emitChangeInRoom(roomName, "user_left", dbWrapper.getRoom(roomName).clients);
             }
         });
 
