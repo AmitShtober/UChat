@@ -1,4 +1,4 @@
-var dbRoomsWrapper = require('../serverHandlers/dbRoomsWrapper')
+var dbRoomsWrapper = require('../handlers/dbRoomsWrapper')
 
 var roomsRoutes = function (app) {
 

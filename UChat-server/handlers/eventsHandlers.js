@@ -1,7 +1,7 @@
 var underscore = require('underscore');
 
-var dbRoomsWrapper = require('../serverHandlers/dbRoomsWrapper')
-var dbClientsWrapper = require('../serverHandlers/dbClientsWrapper')
+var dbRoomsWrapper = require('../handlers/dbRoomsWrapper')
+var dbClientsWrapper = require('../handlers/dbClientsWrapper')
 
 var mainLogicEventsHandlers = function (server) {
 
