@@ -1,5 +1,7 @@
 var underscore = require('underscore');
-var dbWrapper = require('./dbWrapper');
+
+var dbRoomsWrapper = require('../handlers/dbRoomsWrapper')
+var dbClientsWrapper = require('../handlers/dbClientsWrapper')
 
 var mainLogicEventsHandlers = function (server) {
 
@@ -28,17 +30,17 @@ var mainLogicEventsHandlers = function (server) {
 
             // if the current user is moving out from an old room we will remove him.
             if (oldRoomName != '') {
-                dbWrapper.removeClientFromRoom(nickName, oldRoomName);
+                dbRoomsWrapper.removeClientFromRoom(nickName, oldRoomName);
             }
 
-            dbWrapper.addClient(socket.id, nickName);
-            dbWrapper.addClientToRoom(roomName, dbWrapper.getClientNickName(socket.id));
+            dbClientsWrapper.addClient(socket.id, nickName);
+            dbRoomsWrapper.addClientToRoom(roomName, dbClientsWrapper.getClientNickName(socket.id));
 
             // publish the change to the users
-            emitChangeInRoom(roomName, "user_added", dbWrapper.getRoom(roomName).clients);
+            emitChangeInRoom(roomName, "user_added", dbRoomsWrapper.getRoom(roomName).clients);
 
             if (oldRoomName != '') {
-                emitChangeInRoom(oldRoomName, "user_left", dbWrapper.getRoom(oldRoomName).clients);
+                emitChangeInRoom(oldRoomName, "user_left", dbRoomsWrapper.getRoom(oldRoomName).clients);
             }
         });
 
@@ -65,11 +67,11 @@ var mainLogicEventsHandlers = function (server) {
 
         // when user leave the chat (occurs also on refresh!!)
         socket.on('disconnect', function () {
-            var currentClient = dbWrapper.getClientNickName(socket.id);
-            dbWrapper.removeClient(socket.id)
-            var roomName = dbWrapper.removeClientFromUnknownRoom(currentClient);
+            var currentClient = dbClientsWrapper.getClientNickName(socket.id);
+            dbClientsWrapper.removeClient(socket.id)
+            var roomName = dbRoomsWrapper.removeClientFromRoom(currentClient, undefined);
             if (roomName != 0) {
-                emitChangeInRoom(roomName, "user_left", dbWrapper.getRoom(roomName).clients);
+                emitChangeInRoom(roomName, "user_left", dbRoomsWrapper.getRoom(roomName).clients);
             }
         });
 
