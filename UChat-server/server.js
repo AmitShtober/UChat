@@ -20,7 +20,7 @@ var server = app.listen(port, function () {
   console.log("\n\tUltraChat Server!\n\tlistening at http://%s:%s", host, port)
 }); 
 
-require("./serverHandlers/eventsHandlers")(server);
+require("./handlers/eventsHandlers")(server);
 
 
 
