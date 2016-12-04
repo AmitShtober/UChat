@@ -1,6 +1,7 @@
 "use strict";
-var db = require('./db');
 var _ = require('underscore');
+var realdb = require("./mysqlDbHandler");
+var db = require("./db");
 
 class dbRoomsWrapper {
 
@@ -17,8 +18,11 @@ class dbRoomsWrapper {
         return room === undefined ? false : true;
     }
 
-    getRooms() {
-        return _.map(db.rooms, function (item) { return { name: item.roomName, description: item.description }; });
+    getRooms(callback) {
+        realdb.select('select * from rooms', function (err, rows, fields) {
+            var items =  _.map(rows, function (item) { return { name: item.name, description: item.description }; })
+            callback(items);
+        });
     }
 
     getRoom(roomName) {

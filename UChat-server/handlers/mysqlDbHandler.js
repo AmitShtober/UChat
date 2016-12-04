@@ -1,24 +1,46 @@
-var banana = function () {
-    var mysql = require('mysql');
+"use strict";
 
-    var connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'uchat'
-    });
+var mysql = require('mysql');
 
+class mysqlDbHandler {
 
-    connection.connect();
+    constructor(host, user, password, dbname) {
+        this.connection = mysql.createConnection({
+            host: host,
+            user: user,
+            password: password,
+            database: dbname
+        });
 
+        this.handleDisconnect(this.connection);
+    }
 
-    connection.query('select * from rooms', function (err, rows, fields) {
-        console.log(err);
-        console.log(rows);
-    });
+    select(query, callback) {
+        this.connection.query(query, function (err, rows, fields) {
+            callback(err, rows, fields);
+        });
+    };
 
-    connection.end();
-}
+    // from stackoverflow: the old way doesnt work.
+    // we should listen to the error event and just reconnect.
+    handleDisconnect(connection) {
+        connection.on('error', function (err) {
+            if (!err.fatal) {
+                return;
+            }
 
-module.exports = banana;
+            if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
+                throw err;
+            }
 
+            console.log('Re-connecting lost connection: ' + err.stack);
+
+            connection = mysql.createConnection(connection.config);
+            handleDisconnect(connection);
+            connection.connect();
+        });
+    }
+
+};
+
+module.exports = new mysqlDbHandler('localhost', 'root', '', 'uchat');

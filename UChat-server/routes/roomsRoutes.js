@@ -11,7 +11,9 @@ var roomsRoutes = function (app) {
     });
 
     app.get('/api/rooms', function (req, res) {
-        res.send(dbRoomsWrapper.getRooms());
+        dbRoomsWrapper.getRooms(function (rooms) {
+            res.json(rooms);
+        });
     });
 
     app.get('/api/members/:roomName', function (req, res) {
