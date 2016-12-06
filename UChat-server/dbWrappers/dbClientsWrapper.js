@@ -3,14 +3,19 @@ var roomsToClientsDatabase = require('../dbConnectors/inMemoryDb');
 var _ = require('underscore');
 
 class dbClientsWrapper {
-    isClientExists(nickname) {
-        var exists = false;
-        for (var socketId in clients) {
-            if (roomsToClientsDatabase.clients[socketId] == nickname) {
-                exists = true;
+    isClientExists(nickname, callback) {
+        try {
+            var exists = false;
+            for (var socketId in roomsToClientsDatabase.clients) {
+                if (roomsToClientsDatabase.clients[socketId] == nickname) {
+                    exists = true;
+                }
             }
+            callback(undefined, exists);
         }
-        return exists;
+        catch (err) {
+            callback(err, false);
+        }
     }
 
     addClient(socketId, nickname) {

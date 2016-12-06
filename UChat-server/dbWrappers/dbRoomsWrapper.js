@@ -5,12 +5,12 @@ var roomsToClientsDatabase = require("../dbConnectors/inMemoryDb");
 
 class dbRoomsWrapper {
 
-    init(){
-        var rooms = this.getRooms(function(err, rooms){
-            if(err != undefined) {
+    init() {
+        var rooms = this.getRooms(function (err, rooms) {
+            if (err != undefined) {
                 console.log("error in init of db rooms wrapper:" + err);
             } else {
-                rooms.forEach(function(item){
+                rooms.forEach(function (item) {
                     this.addRoomToInMemoryDataBase(item.name, item.description);
                 }.bind(this));
             }
@@ -24,13 +24,13 @@ class dbRoomsWrapper {
         }.bind(this));
     }
 
-    addRoomToInMemoryDataBase(roomName, roomDescription){
-         roomsToClientsDatabase.rooms.push({ roomName: roomName, description: roomDescription, clients: [] });
+    addRoomToInMemoryDataBase(roomName, roomDescription) {
+        roomsToClientsDatabase.rooms.push({ roomName: roomName, description: roomDescription, clients: [] });
     }
 
     getRooms(callback) {
         roomsDatabase.select('select * from rooms', function (err, rows, fields) {
-            if(callback!=undefined){
+            if (callback != undefined) {
                 callback(err, rows);
             }
         });
