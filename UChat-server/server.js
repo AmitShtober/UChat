@@ -22,7 +22,7 @@ app.use('/api/users', usersRoutes);
 app.use(function (err, req, res, next) {
   // log this stuff instead of console.log
   console.error(err.stack);
-  res.status(500).send('error occured')
+  res.status(500).send('error occured');
 });
 
 var server = app.listen(port, function () {
