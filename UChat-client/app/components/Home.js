@@ -15,10 +15,8 @@ class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
-        this.handleClose = this.handleClose.bind(this);
         this.clearData = this.clearData.bind(this);
-        this.state = { isShowingModal: true };
+        this.state = { isShowingModal: false };
     }
 
     render() {
@@ -30,19 +28,18 @@ class Home extends React.Component {
 
         return (
             <div>
-                <div onClick={this.handleClick}>
-                    {
-                        this.state.isShowingModal &&
-                        <ModalContainer onClose={this.handleClose}>
-                            <ModalDialog style={{ top: 20 + '%' }} onClose={this.handleClose}>
-                                <p style={{ textAlign: 'center' }}>
-                                    <img src={serverIsDownImage} style={{ 'width': 250 + 'px' }} />
-                                </p>
-                                <h1>We are working on it.</h1>
-                            </ModalDialog>
-                        </ModalContainer>
-                    }
-                </div>
+                {
+                    this.state.isShowingModal &&
+                    <ModalContainer>
+                        <ModalDialog style={{ top: 20 + '%' }} >
+                            <p style={{ textAlign: 'center' }}>
+                                <img src={serverIsDownImage} style={{ 'width': 250 + 'px' }} />
+                            </p>
+                            <h1>We are working on it.</h1>
+                            <h4>(it will disappear when we will be on again)</h4>
+                        </ModalDialog>
+                    </ModalContainer>
+                }
                 <div className='container'>
 
                     <NotificationContainer />
@@ -60,10 +57,6 @@ class Home extends React.Component {
 
     handleClick() {
         this.setState({ isShowingModal: true });
-    }
-
-    handleClose() {
-        this.setState({ isShowingModal: false });
     }
 
     clearData() {
