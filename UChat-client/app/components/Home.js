@@ -9,6 +9,7 @@ var NotificationContainer = require('react-notifications').NotificationContainer
 var ModalContainer = require('react-modal-dialog').ModalContainer;
 var ModalDialog = require('react-modal-dialog').ModalDialog;
 var serverIsDownImage = require('../images/server_is_down.png');
+var serverHelpers = require('../utils/serverHelpers');
 
 class Home extends React.Component {
 
@@ -22,19 +23,18 @@ class Home extends React.Component {
 
     render() {
         var helloUser = '';
+
         if (localStorageHelpers.isUserLogged()) {
             helloUser = 'Hello ' + localStorageHelpers.getUser().user_nickname + '!';
         }
 
-
         return (
-            <div className='container'>
-
+            <div>
                 <div onClick={this.handleClick}>
                     {
                         this.state.isShowingModal &&
                         <ModalContainer onClose={this.handleClose}>
-                            <ModalDialog onClose={this.handleClose}>
+                            <ModalDialog style={{ top: 20 + '%' }} onClose={this.handleClose}>
                                 <p style={{ textAlign: 'center' }}>
                                     <img src={serverIsDownImage} style={{ 'width': 250 + 'px' }} />
                                 </p>
@@ -43,16 +43,17 @@ class Home extends React.Component {
                         </ModalContainer>
                     }
                 </div>
+                <div className='container'>
 
-                <NotificationContainer />
-                <div className="row" style={{ padding: 15 + 'px' }}>
-                    <div className="page-header" >
-                        <h1 className='mainHeader'>UltraChat <button className='btn' onClick={this.clearData}>clear</button><small className='mainHeaderSubtext'> Simple Chat based on #ReactJS #Bootstrap</small><br /></h1>
-                        <h3 className='secondaryHeader'> {helloUser}</h3>
-
+                    <NotificationContainer />
+                    <div className="row" style={{ padding: 15 + 'px' }}>
+                        <div className="page-header" >
+                            <h1 className='mainHeader'>UltraChat <button className='btn' onClick={this.clearData}>clear</button><small className='mainHeaderSubtext'> Simple Chat based on #ReactJS #Bootstrap</small><br /></h1>
+                            <h3 className='secondaryHeader'> {helloUser}</h3>
+                        </div>
                     </div>
+                    {this.props.children}
                 </div>
-                {this.props.children}
             </div>
         )
     }
@@ -68,6 +69,16 @@ class Home extends React.Component {
     clearData() {
         localStorageHelpers.clearData();
         this.context.router.push('/');
+    }
+
+    componentDidMount(s, d) {
+        serverHelpers.recovery(function() {
+            console.log("conn");
+            this.setState({ isShowingModal: false });
+        }.bind(this), function() {
+            console.log("dis");
+            this.setState({ isShowingModal: true });
+        }.bind(this));
     }
 }
 
