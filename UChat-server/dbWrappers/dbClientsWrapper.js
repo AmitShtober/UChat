@@ -7,7 +7,7 @@ class dbClientsWrapper {
         try {
             var exists = false;
             for (var socketId in roomsToClientsDatabase.clients) {
-                if (roomsToClientsDatabase.clients[socketId] == nickname) {
+                if (roomsToClientsDatabase.clients[socketId].toLowerCase() == nickname.toLowerCase()) {
                     exists = true;
                 }
             }

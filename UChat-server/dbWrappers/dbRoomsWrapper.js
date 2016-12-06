@@ -37,30 +37,18 @@ class dbRoomsWrapper {
     }
 
     getRoomClients(roomName) {
-        var room = _.find(roomsToClientsDatabase.rooms, function (room) {
-            return room.roomName == roomName;
-        });
-        return room.clients;
+        return this.getRoomSync(roomName).clients;
     }
 
     addClientToRoom(roomName, nickName) {
-        var room = _.find(roomsToClientsDatabase.rooms, function (item) {
-            if (item.roomName == roomName) {
-                item.clients.push(nickName);
-            }
-        });
+        this.getRoomSync(roomName).clients.push(nickName);
     }
 
     removeClientFromRoom(nickName, roomName) {
         // if the room is known
         if (roomName != undefined) {
-
-            var room = _.find(roomsToClientsDatabase.rooms, function (item) {
-                if (item.roomName == roomName) {
-                    item.clients = _.without(item.clients, nickName);
-                }
-            });
-
+            var room = this.getRoomSync(roomName);
+            room.clients = _.without(room.clients, nickName);
         } else {
 
             // self-explaing: remove a client from an unknown room
@@ -83,6 +71,24 @@ class dbRoomsWrapper {
         }
 
 
+    }
+
+    getRoomAsync(roomName, callback) {
+        _.find(roomsToClientsDatabase.rooms, function (item) {
+            if (item.roomName.toLowerCase() == roomName.toLowerCase()) {
+                callback(item);
+            }
+        });
+    }
+
+    getRoomSync(roomName, callback) {
+        var room = undefined;
+        _.find(roomsToClientsDatabase.rooms, function (item) {
+            if (item.roomName.toLowerCase() == roomName.toLowerCase()) {
+                room = item;
+            }
+        });
+        return room;
     }
 }
 
