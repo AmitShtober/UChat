@@ -52,7 +52,7 @@ class RoomsBoxContainer extends React.Component {
 
     newRoomNotification(data) {
 
-        if (!isRoomsExists(data)) {
+        if (this.isRoomsExists(data) == false) {
             var allRooms = this.state.rooms;
             var newRoom = { name: data["name"], description: data["description"], link: `/#/room/${data["name"]}` };
 
