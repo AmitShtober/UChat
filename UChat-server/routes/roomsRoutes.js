@@ -1,26 +1,29 @@
-var dbRoomsWrapper = require('../handlers/dbRoomsWrapper')
+var express = require('express');
+var router = express.Router();
+var dbRoomsWrapper = require('../handlers/dbRoomsWrapper');
 
-var roomsRoutes = function (app) {
+router.use(function timeLog(req, res, next) {
+    console.log('Time: ', Date.now());
+    next();
+});
 
-    app.post('/api/createRoom', function (req, res) {
-        var roomName = req.body.name;
-        var roomDescription = req.body.description;
-        dbRoomsWrapper.addRoom(roomName, roomDescription, function () {
-            console.log(`New room was added: ${roomName}, description: ${roomDescription}`);
-            res.send('Room was added successfully');
-        });
+router.post('/createRoom', function (req, res) {
+    var roomName = req.body.name;
+    var roomDescription = req.body.description;
+    dbRoomsWrapper.addRoom(roomName, roomDescription, function () {
+        console.log(`New room was added: ${roomName}, description: ${roomDescription}`);
+        res.send('Room was added successfully');
     });
+});
 
-    app.get('/api/rooms', function (req, res) {
-        dbRoomsWrapper.getRooms(function (rooms) {
-            res.json(rooms);
-        });
+router.get('/rooms', function (req, res) {
+    dbRoomsWrapper.getRooms(function (rooms) {
+        res.json(rooms);
     });
+});
 
-    app.get('/api/members/:roomName', function (req, res) {
-        res.send(dbRoomsWrapper.getRoom(req.params["roomName"]).clients);
-    });
+router.get('/members/:roomName', function (req, res) {
+    res.send(dbRoomsWrapper.getRoom(req.params["roomName"]).clients);
+});
 
-};
-
-module.exports = roomsRoutes;
+module.exports = router;
