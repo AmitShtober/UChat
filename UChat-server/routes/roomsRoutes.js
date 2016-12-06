@@ -27,7 +27,7 @@ router.get('/rooms', function (req, res) {
 });
 
 router.get('/members/:roomName', function (req, res) {
-    res.send(dbRoomsWrapper.getRoom(req.params["roomName"]).clients);
+    res.send(dbRoomsWrapper.getRoomClients(req.params["roomName"]));
 });
 
 

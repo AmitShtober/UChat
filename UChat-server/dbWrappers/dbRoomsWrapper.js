@@ -5,12 +5,12 @@ var roomsToClientsDatabase = require("../dbConnectors/inMemoryDb");
 
 class dbRoomsWrapper {
 
-    init(){
-        var rooms = this.getRooms(function(err, rooms){
-            if(err != undefined) {
+    init() {
+        var rooms = this.getRooms(function (err, rooms) {
+            if (err != undefined) {
                 console.log("error in init of db rooms wrapper:" + err);
             } else {
-                rooms.forEach(function(item){
+                rooms.forEach(function (item) {
                     this.addRoomToInMemoryDataBase(item.name, item.description);
                 }.bind(this));
             }
@@ -24,43 +24,31 @@ class dbRoomsWrapper {
         }.bind(this));
     }
 
-    addRoomToInMemoryDataBase(roomName, roomDescription){
-         roomsToClientsDatabase.rooms.push({ roomName: roomName, description: roomDescription, clients: [] });
+    addRoomToInMemoryDataBase(roomName, roomDescription) {
+        roomsToClientsDatabase.rooms.push({ roomName: roomName, description: roomDescription, clients: [] });
     }
 
     getRooms(callback) {
         roomsDatabase.select('select * from rooms', function (err, rows, fields) {
-            if(callback!=undefined){
+            if (callback != undefined) {
                 callback(err, rows);
             }
         });
     }
 
     getRoomClients(roomName) {
-        var room = _.find(roomsToClientsDatabase.rooms, function (room) {
-            return room.roomName == roomName;
-        });
-        return room.clients;
+        return this.getRoomSync(roomName).clients;
     }
 
     addClientToRoom(roomName, nickName) {
-        var room = _.find(roomsToClientsDatabase.rooms, function (item) {
-            if (item.roomName == roomName) {
-                item.clients.push(nickName);
-            }
-        });
+        this.getRoomSync(roomName).clients.push(nickName);
     }
 
     removeClientFromRoom(nickName, roomName) {
         // if the room is known
         if (roomName != undefined) {
-
-            var room = _.find(roomsToClientsDatabase.rooms, function (item) {
-                if (item.roomName == roomName) {
-                    item.clients = _.without(item.clients, nickName);
-                }
-            });
-
+            var room = this.getRoomSync(roomName);
+            room.clients = _.without(room.clients, nickName);
         } else {
 
             // self-explaing: remove a client from an unknown room
@@ -83,6 +71,24 @@ class dbRoomsWrapper {
         }
 
 
+    }
+
+    getRoomAsync(roomName, callback) {
+        _.find(roomsToClientsDatabase.rooms, function (item) {
+            if (item.roomName.toLowerCase() == roomName.toLowerCase()) {
+                callback(item);
+            }
+        });
+    }
+
+    getRoomSync(roomName, callback) {
+        var room = undefined;
+        _.find(roomsToClientsDatabase.rooms, function (item) {
+            if (item.roomName.toLowerCase() == roomName.toLowerCase()) {
+                room = item;
+            }
+        });
+        return room;
     }
 }
 

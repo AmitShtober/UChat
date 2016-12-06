@@ -3,7 +3,8 @@ var path = require('path');
 var cors = require('cors');
 var port = process.env.PORT || 1337;
 var bodyParser = require('body-parser');
-var roomRoutes = require('./routes/roomsRoutes');
+var roomsRoutes = require('./routes/roomsRoutes');
+var usersRoutes = require('./routes/usersRoutes');
 
 var app = express();
 
@@ -15,7 +16,8 @@ app.use(cors({
 }));
 
 
-app.use('/api/rooms', roomRoutes);
+app.use('/api/rooms', roomsRoutes);
+app.use('/api/users', usersRoutes);
 
 app.use(function (err, req, res, next) {
   // log this stuff instead of console.log
