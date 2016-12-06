@@ -45,7 +45,7 @@ var serverHelpers = {
   },
 
   addRoom: function (room, callback) {
-    rest.post('http://localhost:1337/api/createRoom', {
+    rest.post('http://localhost:1337/api/rooms/createRoom', {
       data: room,
     }).on('complete', function (data, response) {
       if (response.statusCode == 200) {
@@ -59,7 +59,7 @@ var serverHelpers = {
     });
   },
   getRooms: function (callback) {
-    fetch('http://localhost:1337/api/rooms')
+    fetch('http://localhost:1337/api/rooms/rooms')
       .then(status)
       .then(json)
       .then(function (data) {

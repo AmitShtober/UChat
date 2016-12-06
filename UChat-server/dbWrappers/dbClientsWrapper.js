@@ -1,12 +1,12 @@
 "use strict";
-var db = require('./db');
+var roomsToClientsDatabase = require('../dbConnectors/inMemoryDb');
 var _ = require('underscore');
 
 class dbClientsWrapper {
     isClientExists(nickname) {
         var exists = false;
         for (var socketId in clients) {
-            if (db.clients[socketId] == nickname) {
+            if (roomsToClientsDatabase.clients[socketId] == nickname) {
                 exists = true;
             }
         }
@@ -14,15 +14,15 @@ class dbClientsWrapper {
     }
 
     addClient(socketId, nickname) {
-        db.clients[socketId] = nickname;
+        roomsToClientsDatabase.clients[socketId] = nickname;
     }
 
     removeClient(socketId) {
-        delete db.clients[socketId];
+        delete roomsToClientsDatabase.clients[socketId];
     }
 
     getClientNickName(socketId) {
-        return db.clients[socketId];
+        return roomsToClientsDatabase.clients[socketId];
     }
 }
 

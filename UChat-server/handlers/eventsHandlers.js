@@ -1,7 +1,6 @@
 var underscore = require('underscore');
-
-var dbRoomsWrapper = require('../handlers/dbRoomsWrapper')
-var dbClientsWrapper = require('../handlers/dbClientsWrapper')
+var dbRoomsWrapper = require('../dbWrappers/dbRoomsWrapper')
+var dbClientsWrapper = require('../dbWrappers/dbClientsWrapper')
 
 var mainLogicEventsHandlers = function (server) {
 
@@ -37,10 +36,10 @@ var mainLogicEventsHandlers = function (server) {
             dbRoomsWrapper.addClientToRoom(roomName, dbClientsWrapper.getClientNickName(socket.id));
 
             // publish the change to the users
-            emitChangeInRoom(roomName, "user_added", dbRoomsWrapper.getRoom(roomName).clients);
+            emitChangeInRoom(roomName, "user_added", dbRoomsWrapper.getRoomClients(roomName));
 
             if (oldRoomName != '') {
-                emitChangeInRoom(oldRoomName, "user_left", dbRoomsWrapper.getRoom(oldRoomName).clients);
+                emitChangeInRoom(oldRoomName, "user_left", dbRoomsWrapper.getRoomClients(oldRoomName));
             }
         });
 
@@ -71,7 +70,7 @@ var mainLogicEventsHandlers = function (server) {
             dbClientsWrapper.removeClient(socket.id)
             var roomName = dbRoomsWrapper.removeClientFromRoom(currentClient, undefined);
             if (roomName != 0) {
-                emitChangeInRoom(roomName, "user_left", dbRoomsWrapper.getRoom(roomName).clients);
+                emitChangeInRoom(roomName, "user_left", dbRoomsWrapper.getRoomClients(roomName));
             }
         });
 
