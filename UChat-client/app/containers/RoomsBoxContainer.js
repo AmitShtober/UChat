@@ -4,6 +4,7 @@ var Room = require('../components/Rooms/Room');
 var serverHelpers = require('../utils/serverHelpers');
 var RoomsBox = require('../components/Rooms/RoomsBox');
 var localStorageHelpers = require('../utils/localStorageHelpers');
+var NotificationManager = require('react-notifications').NotificationManager
 
 class RoomsBoxContainer extends React.Component {
     constructor(props) {
@@ -36,19 +37,22 @@ class RoomsBoxContainer extends React.Component {
         )
     }
 
-    newRoomNotification(data) {
-
+    isRoomsExists(roomObject) {
         var found = false;
-
         var rooms = this.state.rooms;
 
         rooms.forEach(function (item) {
-            if (item.name == data.name) {
+            if (item.name == roomObject.name) {
                 found = true;
             }
         }, this);
 
-        if (!found) {
+        return found;
+    }
+
+    newRoomNotification(data) {
+
+        if (!isRoomsExists(data)) {
             var allRooms = this.state.rooms;
             var newRoom = { name: data["name"], description: data["description"], link: `/#/room/${data["name"]}` };
 
@@ -93,22 +97,36 @@ class RoomsBoxContainer extends React.Component {
         var newRoomDescription = this.state.newRoomDescription;
 
         if (newRoomName == '') {
-            alert('The room name is empty!');
+            NotificationManager.error("You can't use an empty room name...");
             return;
         }
 
         var allRooms = this.state.rooms;
 
         var newRoom = { name: newRoomName, description: newRoomDescription, link: `/#/room/${newRoomName}` };
-        serverHelpers.addRoom(newRoom, function (isCreated) {
-            allRooms.push(newRoom);
-            console.log("1");
+
+        if (this.isRoomsExists(newRoom)) {
+            NotificationManager.error("This room name is already in use!");
             this.setState({
-                newRoomName: "",
-                newRoomDescription: "",
-                rooms: allRooms.sort()
+                newRoomName: ""
             });
-        }.bind(this));
+        } else {
+            serverHelpers.addRoom(newRoom, function (isCreated) {
+                if (isCreated) {
+                    allRooms.push(newRoom);
+                    this.setState({
+                        newRoomName: "",
+                        newRoomDescription: "",
+                        rooms: allRooms.sort()
+                    });
+
+                    NotificationManager.success("The room was added!");
+
+                } else {
+                    NotificationManager.error("There was an error while trying to add a room! please try agagin");
+                }
+            }.bind(this));
+        }
     }
 
     componentDidMount(s, d) {
