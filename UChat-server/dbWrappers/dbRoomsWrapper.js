@@ -20,11 +20,11 @@ class dbRoomsWrapper {
         });
     }
 
-    getRoom(roomName) {
+    getRoomClients(roomName) {
         var room = _.find(roomsToClientsDatabase.rooms, function (room) {
             return room.roomName == roomName;
         });
-        return room;
+        return room.clients;
     }
 
     addClientToRoom(roomName, nickName) {
@@ -34,7 +34,6 @@ class dbRoomsWrapper {
             }
         });
     }
-
 
     removeClientFromRoom(nickName, roomName) {
         // if the room is known
