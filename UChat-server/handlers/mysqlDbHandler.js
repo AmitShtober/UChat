@@ -20,6 +20,11 @@ class mysqlDbHandler {
             callback(err, rows, fields);
         });
     };
+    insert(table, data, callback) {
+       this.connection.query('INSERT INTO ' + table + ' (name, description) VALUES (?,?)', [data.room, data.description], function (err, result) {
+            callback(err, result);
+        });
+    }
 
     // from stackoverflow: the old way doesnt work.
     // we should listen to the error event and just reconnect.

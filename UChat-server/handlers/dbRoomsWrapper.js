@@ -1,39 +1,34 @@
 "use strict";
 var _ = require('underscore');
-var realdb = require("./mysqlDbHandler");
-var db = require("./db");
+var roomsDatabase = require("./mysqlDbHandler");
+var roomsToClientsDatabase = require("./inMemoryDb");
 
 class dbRoomsWrapper {
 
-    addRoom(roomName, roomDescription) {
-        db.rooms.push({ roomName: roomName, description: roomDescription, clients: [] });
-    }
-
-    isRoomExists(roomName) {
-
-        var room = _.find(db.rooms, function (room) {
-            return room.roomName == roomName;
+    addRoom(roomName, roomDescription, callback) {
+        roomsDatabase.insert('rooms', { room: roomName, description: roomDescription }, function (err, rows, fields) {
+            if (err) throw err;
+            roomsToClientsDatabase.rooms.push({ roomName: roomName, description: roomDescription, clients: [] });
+            callback(rows);
         });
-
-        return room === undefined ? false : true;
     }
 
     getRooms(callback) {
-        realdb.select('select * from rooms', function (err, rows, fields) {
-            var items =  _.map(rows, function (item) { return { name: item.name, description: item.description }; })
-            callback(items);
+        roomsDatabase.select('select * from rooms', function (err, rows, fields) {
+            if (err) throw err;
+            callback(rows);
         });
     }
 
     getRoom(roomName) {
-        var room = _.find(db.rooms, function (room) {
+        var room = _.find(roomsToClientsDatabase.rooms, function (room) {
             return room.roomName == roomName;
         });
         return room;
     }
 
     addClientToRoom(roomName, nickName) {
-        var room = _.find(db.rooms, function (item) {
+        var room = _.find(roomsToClientsDatabase.rooms, function (item) {
             if (item.roomName == roomName) {
                 item.clients.push(nickName);
             }
@@ -42,11 +37,10 @@ class dbRoomsWrapper {
 
 
     removeClientFromRoom(nickName, roomName) {
-
         // if the room is known
         if (roomName != undefined) {
 
-            var room = _.find(db.rooms, function (item) {
+            var room = _.find(roomsToClientsDatabase.rooms, function (item) {
                 if (item.roomName == roomName) {
                     item.clients = _.without(item.clients, nickName);
                 }
@@ -61,7 +55,7 @@ class dbRoomsWrapper {
             var roomNameFound = 0;
 
             // remove from unknown room
-            db.rooms.forEach(function (item) {
+            roomsToClientsDatabase.rooms.forEach(function (item) {
                 if (_.contains(item.clients, nickName)) {
                     console.log("before:" + item.clients.length);
                     item.clients = _.without(item.clients, nickName);

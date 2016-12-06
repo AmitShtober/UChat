@@ -5,9 +5,10 @@ var roomsRoutes = function (app) {
     app.post('/api/createRoom', function (req, res) {
         var roomName = req.body.name;
         var roomDescription = req.body.description;
-        dbRoomsWrapper.addRoom(roomName, roomDescription);
-        console.log(`New room was added: ${roomName}, description: ${roomDescription}`);
-        res.send('Room was added successfully');
+        dbRoomsWrapper.addRoom(roomName, roomDescription, function () {
+            console.log(`New room was added: ${roomName}, description: ${roomDescription}`);
+            res.send('Room was added successfully');
+        });
     });
 
     app.get('/api/rooms', function (req, res) {
