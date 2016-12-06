@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('underscore');
-var roomsDatabase = require("./mysqlDbHandler");
-var roomsToClientsDatabase = require("./inMemoryDb");
+var roomsDatabase = require("../dbConnectors/mysqlDb");
+var roomsToClientsDatabase = require("../dbConnectors/inMemoryDb");
 
 class dbRoomsWrapper {
 

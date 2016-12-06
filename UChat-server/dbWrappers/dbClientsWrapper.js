@@ -1,5 +1,5 @@
 "use strict";
-var roomsToClientsDatabase = require('./inMemoryDb');
+var roomsToClientsDatabase = require('../dbConnectors/inMemoryDb');
 var _ = require('underscore');
 
 class dbClientsWrapper {

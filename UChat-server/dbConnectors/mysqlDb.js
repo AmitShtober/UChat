@@ -2,7 +2,7 @@
 
 var mysql = require('mysql');
 
-class mysqlDbHandler {
+class mysqlDb {
 
     constructor(host, user, password, dbname) {
         this.connection = mysql.createConnection({
@@ -48,4 +48,4 @@ class mysqlDbHandler {
 
 };
 
-module.exports = new mysqlDbHandler('localhost', 'root', '', 'uchat');
+module.exports = new mysqlDb('localhost', 'root', '', 'uchat');

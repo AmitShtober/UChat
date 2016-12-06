@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var dbRoomsWrapper = require('../handlers/dbRoomsWrapper');
+var dbRoomsWrapper = require('../dbWrappers/dbRoomsWrapper');
 
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
