@@ -110,18 +110,22 @@ class RoomsBoxContainer extends React.Component {
             this.setState({
                 newRoomName: ""
             });
-
         } else {
             serverHelpers.addRoom(newRoom, function (isCreated) {
-                allRooms.push(newRoom);
-                this.setState({
-                    newRoomName: "",
-                    newRoomDescription: "",
-                    rooms: allRooms.sort()
-                });
-            }.bind(this));
+                if (isCreated) {
+                    allRooms.push(newRoom);
+                    this.setState({
+                        newRoomName: "",
+                        newRoomDescription: "",
+                        rooms: allRooms.sort()
+                    });
 
-            NotificationManager.success("The room was added!");
+                    NotificationManager.success("The room was added!");
+
+                } else {
+                    NotificationManager.error("There was an error while trying to add a room! please try agagin");
+                }
+            }.bind(this));
         }
     }
 
