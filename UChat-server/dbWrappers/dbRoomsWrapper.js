@@ -5,12 +5,24 @@ var roomsToClientsDatabase = require("../dbConnectors/inMemoryDb");
 
 class dbRoomsWrapper {
 
+    init(){
+        var rooms = this.getRooms(function(rooms){
+            rooms.forEach(function(item){
+                this.addRoomToInMemoryDataBase(item.name, item.description);
+            }.bind(this));
+        }.bind(this));
+    }
+
     addRoom(roomName, roomDescription, callback) {
         roomsDatabase.insert('rooms', { room: roomName, description: roomDescription }, function (err, rows, fields) {
             if (err) throw err;
-            roomsToClientsDatabase.rooms.push({ roomName: roomName, description: roomDescription, clients: [] });
+            this.addRoomToInMemoryDataBase(roomName, roomDescription);
             callback(rows);
-        });
+        }.bind(this));
+    }
+
+    addRoomToInMemoryDataBase(roomName, roomDescription){
+         roomsToClientsDatabase.rooms.push({ roomName: roomName, description: roomDescription, clients: [] });
     }
 
     getRooms(callback) {
@@ -69,5 +81,9 @@ class dbRoomsWrapper {
 
     }
 }
+
+var dbRoomsWrapperObject = new dbRoomsWrapper();
+
+dbRoomsWrapperObject.init();
 
 module.exports = new dbRoomsWrapper();

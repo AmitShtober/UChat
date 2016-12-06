@@ -14,6 +14,7 @@ app.use(cors({
     credentials: true
 }));
 
+
 app.use('/api/rooms', roomRoutes);
 
 var server = app.listen(port, function () {
