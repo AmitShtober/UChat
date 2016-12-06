@@ -58,12 +58,22 @@ var serverHelpers = {
       }
     });
   },
+
   getRooms: function (callback) {
     fetch('http://localhost:1337/api/rooms/rooms')
       .then(status)
       .then(json)
       .then(function (data) {
         callback(data);
+      });
+  } ,
+
+  isUserExists: function (username, callback) {
+    fetch('http://localhost:1337/api/users/exists/' + username)
+      .then(status)
+      .then(json)
+      .then(function (data) {
+        callback(JSON.parse(data));
       });
   }
 };
