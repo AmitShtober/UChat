@@ -42,7 +42,7 @@ class RoomsBoxContainer extends React.Component {
         var rooms = this.state.rooms;
 
         rooms.forEach(function (item) {
-            if (item.name == roomObject.name) {
+            if (item.name.toLowerCase() == roomObject.name.toLowerCase()) {
                 found = true;
             }
         }, this);
