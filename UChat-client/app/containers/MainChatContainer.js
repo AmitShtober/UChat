@@ -12,19 +12,23 @@ class MainChatContainer extends React.Component {
         this.handleMessageChanged = this.handleMessageChanged.bind(this);
         this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
         this.updataData = this.updataData.bind(this);
+        this.setServerUpState = this.setServerUpState.bind(this);
+        this.setServerDownState = this.setServerDownState.bind(this);
 
         this.state =
             {
-                roomName : this.props.roomName,
+                roomName: this.props.roomName,
                 newMessage: "",
-                messages: []
+                messages: [],
+                isServerUp: true
             };
     }
 
     render() {
-        
+
         return (
             <MainChat
+                isServerUp={this.state.isServerUp}
                 roomName={this.state.roomName}
                 onMessageSubmit={this.handleMessageSubmit}
                 onMessageChanged={this.handleMessageChanged}
@@ -69,27 +73,42 @@ class MainChatContainer extends React.Component {
 
         serverHelpers.sendMessage(this.state.roomName, localStorageHelpers.getUser().user_nickname, newMessage, new Date().toLocaleString());
 
-          this.setState({
-                newMessage: "",
-            });
+        this.setState({
+            newMessage: "",
+        });
     }
 
     componentDidMount(s, d) {
         serverHelpers.registerToRoom(this.state.roomName, this.updataData);
+
+        // recovery function
+        serverHelpers.recovery(this.setServerUpState, this.setServerDownState);
     }
 
     componentWillUnmount(s, d) {
         serverHelpers.unRegisterToRoom(this.state.roomName, this.updataData);
+
+        // remove recovery functions
+        serverHelpers.unRecovery(this.setServerUpState, this.setServerDownState);
+
+    }
+
+    setServerUpState() {
+        this.setState({ isServerUp: true });
+    }
+
+    setServerDownState() {
+        this.setState({ isServerUp: false });
     }
 
     componentWillReceiveProps(nextProps) {
         var oldRoom = this.state.roomName;
         var newRoom = nextProps.roomName;
         serverHelpers.unRegisterToRoom(oldRoom, this.updataData);
-        this.setState({roomName:newRoom,  messages:[]});
-        serverHelpers.enterRoom(localStorageHelpers.getUser().user_nickname,newRoom, oldRoom);
+        this.setState({ roomName: newRoom, messages: [] });
+        serverHelpers.enterRoom(localStorageHelpers.getUser().user_nickname, newRoom, oldRoom);
         serverHelpers.registerToRoom(newRoom, this.updataData);
-    } 
+    }
 }
 
 MainChatContainer.contextTypes = {

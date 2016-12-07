@@ -41,9 +41,9 @@ class mysqlDb {
             console.log('Re-connecting lost connection: ' + err.stack);
 
             connection = mysql.createConnection(connection.config);
-            handleDisconnect(connection);
+            this.handleDisconnect(connection);
             connection.connect();
-        });
+        }.bind(this));
     }
 
 };
