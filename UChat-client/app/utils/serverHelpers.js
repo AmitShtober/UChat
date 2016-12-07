@@ -3,7 +3,7 @@ require('whatwg-fetch');
 var io = require('socket.io-client');
 var rest = require('restler');
 //var server = "http://uchat-94132.onmodulus.net";
-var sever = "http://localhost:1337/";
+var server = "http://localhost:1337/";
 var socketio;
 
 var serverHelpers = {
