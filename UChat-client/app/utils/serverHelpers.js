@@ -3,21 +3,22 @@ require('whatwg-fetch');
 var io = require('socket.io-client');
 var rest = require('restler');
 var socketio;
-var recoveryDisconnect;
-var recoveryConnect;
 
 var serverHelpers = {
     connect: function(callback) {
         socketio = io.connect("http://localhost:1337/");
         socketio.on('connect', callback);
+    },
 
-        socketio.on('disconnect', recoveryDisconnect);
-        socketio.on('connect', recoveryConnect);
-    },
     recovery: function(connectCallBack, disconnectCallBack) {
-        recoveryDisconnect = disconnectCallBack;
-        recoveryConnect = connectCallBack;
+        socketio.on('connect', connectCallBack);
+        socketio.on('disconnect', disconnectCallBack);
     },
+    unRecovery: function(connectCallBack, disconnectCallBack) {
+        socketio.removeListener('connect', connectCallBack);
+        socketio.removeListener('disconnect', disconnectCallBack);
+    },
+
     registerToNewRoom: function(func) {
         if (socketio != undefined) {
             socketio.on("new_room", func);
@@ -82,8 +83,8 @@ var serverHelpers = {
             .then(status)
             .then(json)
             .then(function(data) {
-                callback(JSON.parse(data));
-            });
+                callback(true, JSON.parse(data));
+            }).catch(error => callback(false, error));
     }
 };
 
