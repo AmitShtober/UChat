@@ -32,7 +32,12 @@ module.exports = {
             {
                 test: /\.png$/,
                 loader: "file-loader?images/[name].[ext]"
+            },
+            {
+                test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
+                loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
             }
+
         ]
     },
     plugins: [HtmlWebpackPluginConfig]

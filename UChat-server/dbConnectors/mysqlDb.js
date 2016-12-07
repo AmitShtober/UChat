@@ -49,3 +49,4 @@ class mysqlDb {
 };
 
 module.exports = new mysqlDb('localhost', 'root', '', 'uchat');
+//module.exports = new mysqlDb('sql7.freemysqlhosting.net', 'sql7148313', 'igFUgcpE5t', 'sql7148313');

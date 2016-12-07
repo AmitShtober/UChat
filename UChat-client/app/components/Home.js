@@ -7,6 +7,9 @@ var LeftBoxes = require('../components/LeftBoxes');
 var localStorageHelpers = require('../utils/localStorageHelpersMock');
 var NotificationContainer = require('react-notifications').NotificationContainer;
 
+require("style!../style/style.css");
+require("style!../../node_modules/react-notifications/lib/notifications.css");
+
 class Home extends React.Component {
 
     constructor(props) {

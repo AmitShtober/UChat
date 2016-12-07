@@ -2,62 +2,64 @@ require('fs');
 require('whatwg-fetch');
 var io = require('socket.io-client');
 var rest = require('restler');
+//var server = "http://uchat-94132.onmodulus.net";
+var sever = "http://localhost:1337/";
 var socketio;
 
 var serverHelpers = {
-    connect: function(callback) {
-        socketio = io.connect("http://localhost:1337/");
+    connect: function (callback) {
+        socketio = io.connect(server);
         socketio.on('connect', callback);
     },
 
-    recovery: function(connectCallBack, disconnectCallBack) {
+    recovery: function (connectCallBack, disconnectCallBack) {
         socketio.on('connect', connectCallBack);
         socketio.on('disconnect', disconnectCallBack);
     },
-    unRecovery: function(connectCallBack, disconnectCallBack) {
+    unRecovery: function (connectCallBack, disconnectCallBack) {
         socketio.removeListener('connect', connectCallBack);
         socketio.removeListener('disconnect', disconnectCallBack);
     },
 
-    registerToNewRoom: function(func) {
+    registerToNewRoom: function (func) {
         if (socketio != undefined) {
             socketio.on("new_room", func);
         }
     },
-    unRegisterToNewRoom: function(func) {
+    unRegisterToNewRoom: function (func) {
         if (socketio != undefined) {
             socketio.removeListener("new_room", func);
         }
     },
-    enterRoom: function(currentUserNickName, roomName, oldRoomName) {
+    enterRoom: function (currentUserNickName, roomName, oldRoomName) {
         if (socketio != undefined) {
             socketio.emit("enter_room", { nickname: currentUserNickName, roomName: roomName, oldRoomName: oldRoomName });
         }
     },
 
-    registerToRoom: function(roomName, func) {
+    registerToRoom: function (roomName, func) {
         if (socketio != undefined) {
             socketio.on("room_" + roomName, func);
         }
     },
 
-    unRegisterToRoom: function(roomName, func) {
+    unRegisterToRoom: function (roomName, func) {
         if (socketio != undefined) {
             socketio.removeListener("room_" + roomName, func);
         }
     },
 
-    sendMessage: function(roomName, nickName, message, timestamp) {
+    sendMessage: function (roomName, nickName, message, timestamp) {
         if (socketio != undefined) {
             socketio.emit("send_message",
                 { nickname: nickName, roomName: roomName, message: message, timestamp: timestamp });
         }
     },
 
-    addRoom: function(room, callback) {
-        rest.post('http://localhost:1337/api/rooms/createRoom', {
+    addRoom: function (room, callback) {
+        rest.post(server + '/api/rooms/createRoom', {
             data: room,
-        }).on('complete', function(data, response) {
+        }).on('complete', function (data, response) {
             if (response.statusCode == 200) {
                 callback(true);
                 if (socketio != undefined) {
@@ -69,20 +71,20 @@ var serverHelpers = {
         });
     },
 
-    getRooms: function(callback) {
-        fetch('http://localhost:1337/api/rooms/rooms')
+    getRooms: function (callback) {
+        fetch(server + '/api/rooms/rooms')
             .then(status)
             .then(json)
-            .then(function(data) {
+            .then(function (data) {
                 callback(data);
             });
     },
 
-    isUserExists: function(username, callback) {
-        fetch('http://localhost:1337/api/users/exists/' + username)
+    isUserExists: function (username, callback) {
+        fetch(server + '/api/users/exists/' + username)
             .then(status)
             .then(json)
-            .then(function(data) {
+            .then(function (data) {
                 callback(true, JSON.parse(data));
             }).catch(error => callback(false, error));
     }
