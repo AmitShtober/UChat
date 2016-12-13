@@ -62,7 +62,7 @@ class PickName extends React.Component {
 
         //TODO: add a check if the nickname is in use..
         event.preventDefault();
-
+        
         serverHelpers.isUserExists(this.state.nickname, function(success, isExists) {
 
             if (success == false) {
@@ -71,7 +71,7 @@ class PickName extends React.Component {
             }
 
             if (isExists == false) {
-                serverHelpers.connect(function() {
+                serverHelpers.firstConnect(function() {
                     localStorageHelpers.setUser(this.state.nickname, this.state.description);
                     serverHelpers.enterRoom(localStorageHelpers.getUser().user_nickname, "lobby", "");
                     this.context.router.push('/room/lobby')

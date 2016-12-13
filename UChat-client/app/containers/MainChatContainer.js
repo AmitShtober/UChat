@@ -80,7 +80,7 @@ class MainChatContainer extends React.Component {
 
     componentDidMount(s, d) {
         serverHelpers.registerToRoom(this.state.roomName, this.updataData);
-
+        
         // recovery function
         serverHelpers.recovery(this.setServerUpState, this.setServerDownState);
     }
@@ -95,6 +95,9 @@ class MainChatContainer extends React.Component {
 
     setServerUpState() {
         this.setState({ isServerUp: true });
+        
+        // make the user log to the room once again after the server was down
+        serverHelpers.enterRoom(localStorageHelpers.getUser().user_nickname, this.state.roomName, "");
     }
 
     setServerDownState() {

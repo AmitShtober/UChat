@@ -7,29 +7,39 @@ var server = "http://localhost:1337";
 var socketio;
 
 var serverHelpers = {
-    connect: function (callback) {
+
+    firstConnect: function (callback) {
+
         socketio = io.connect(server);
-        socketio.on('connect', callback);
+
+        // using func in order to remove the listener inside it.
+        var func = function () {
+            callback();
+            removeListener('connect', func);
+        };
+
+        addListener('connect', func);
+    },
+
+    removeConnectCallback: function (callback) {
+        removeListener('connect', callback);
     },
 
     recovery: function (connectCallBack, disconnectCallBack) {
-        socketio.on('connect', connectCallBack);
-        socketio.on('disconnect', disconnectCallBack);
+        addListener('connect', connectCallBack);
+        addListener('disconnect', disconnectCallBack);
     },
+
     unRecovery: function (connectCallBack, disconnectCallBack) {
-        socketio.removeListener('connect', connectCallBack);
-        socketio.removeListener('disconnect', disconnectCallBack);
+        removeListener('connect', connectCallBack);
+        removeListener('disconnect', disconnectCallBack);
     },
 
     registerToNewRoom: function (func) {
-        if (socketio != undefined) {
-            socketio.on("new_room", func);
-        }
+        addListener("new_room", func);
     },
     unRegisterToNewRoom: function (func) {
-        if (socketio != undefined) {
-            socketio.removeListener("new_room", func);
-        }
+        removeListener("new_room", func);
     },
     enterRoom: function (currentUserNickName, roomName, oldRoomName) {
         if (socketio != undefined) {
@@ -38,15 +48,11 @@ var serverHelpers = {
     },
 
     registerToRoom: function (roomName, func) {
-        if (socketio != undefined) {
-            socketio.on("room_" + roomName, func);
-        }
+        addListener("room_" + roomName, func);
     },
 
     unRegisterToRoom: function (roomName, func) {
-        if (socketio != undefined) {
-            socketio.removeListener("room_" + roomName, func);
-        }
+        removeListener("room_" + roomName, func);
     },
 
     sendMessage: function (roomName, nickName, message, timestamp) {
@@ -89,6 +95,18 @@ var serverHelpers = {
             }).catch(error => callback(false, error));
     }
 };
+
+function addListener(listener, callback) {
+    if (socketio != undefined) {
+        socketio.on(listener, callback);
+    }
+}
+
+function removeListener(listener, callback) {
+    if (socketio != undefined) {
+        socketio.removeListener(listener, callback);
+    }
+}
 
 function status(response) {
     if (response.status >= 200 && response.status < 300) {
