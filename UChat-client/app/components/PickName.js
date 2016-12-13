@@ -2,7 +2,8 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Router = require('react-router');
 var localStorageHelpers = require('../utils/localStorageHelpersMock');
-var serverHelpers = require('../utils/serverHelpers');
+var serverApiHelper = require('../utils/serverApiHelper');
+var serverPupSubHelper = require('../utils/serverPupSubHelper');
 var NotificationManager = require('react-notifications').NotificationManager
 
 class PickName extends React.Component {
@@ -63,7 +64,7 @@ class PickName extends React.Component {
         //TODO: add a check if the nickname is in use..
         event.preventDefault();
         
-        serverHelpers.isUserExists(this.state.nickname, function(success, isExists) {
+        serverApiHelper.isUserExists(this.state.nickname, function(success, isExists) {
 
             if (success == false) {
                 NotificationManager.error("There was error while connecting to the server.. ");
@@ -71,9 +72,9 @@ class PickName extends React.Component {
             }
 
             if (isExists == false) {
-                serverHelpers.firstConnect(function() {
+                serverPupSubHelper.firstConnect(function() {
                     localStorageHelpers.setUser(this.state.nickname, this.state.description);
-                    serverHelpers.enterRoom(localStorageHelpers.getUser().user_nickname, "lobby", "");
+                    serverPupSubHelper.enterRoom(localStorageHelpers.getUser().user_nickname, "lobby", "");
                     this.context.router.push('/room/lobby')
                 }.bind(this));
             } else {

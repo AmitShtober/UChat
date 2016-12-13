@@ -1,12 +1,11 @@
 require('fs');
 require('whatwg-fetch');
 var io = require('socket.io-client');
-var rest = require('restler');
 //var server = "http://uchat-94132.onmodulus.net";
 var server = "http://localhost:1337";
 var socketio;
 
-var serverHelpers = {
+var serverPupSubHelper = {
 
     firstConnect: function (callback) {
 
@@ -61,38 +60,11 @@ var serverHelpers = {
                 { nickname: nickName, roomName: roomName, message: message, timestamp: timestamp });
         }
     },
-
-    addRoom: function (room, callback) {
-        rest.post(server + '/api/rooms/createRoom', {
-            data: room,
-        }).on('complete', function (data, response) {
-            if (response.statusCode == 200) {
-                callback(true);
-                if (socketio != undefined) {
-                    socketio.emit("created_room", { name: room["name"], description: room["description"] })
-                }
-            } else {
-                callback(false);
-            }
-        });
-    },
-
-    getRooms: function (callback) {
-        fetch(server + '/api/rooms/rooms')
-            .then(status)
-            .then(json)
-            .then(function (data) {
-                callback(data);
-            });
-    },
-
-    isUserExists: function (username, callback) {
-        fetch(server + '/api/users/exists/' + username)
-            .then(status)
-            .then(json)
-            .then(function (data) {
-                callback(true, JSON.parse(data));
-            }).catch(error => callback(false, error));
+    
+    publishRoom: function (room) {
+        if (socketio != undefined) {
+            socketio.emit("created_room", { name: room["name"], description: room["description"] });
+        }
     }
 };
 
@@ -108,16 +80,4 @@ function removeListener(listener, callback) {
     }
 }
 
-function status(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response)
-    } else {
-        return Promise.reject(new Error(response.statusText))
-    }
-}
-
-function json(response) {
-    return response.json()
-}
-
-module.exports = serverHelpers;
+module.exports = serverPupSubHelper;

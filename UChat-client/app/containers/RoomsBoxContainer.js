@@ -1,7 +1,8 @@
 var React = require('react');
 var CountableBox = require('../components/Base/CountableBox');
 var Room = require('../components/Rooms/Room');
-var serverHelpers = require('../utils/serverHelpers');
+var serverApiHelper = require('../utils/serverApiHelper');
+var serverPupSubHelper = require('../utils/serverPupSubHelper');
 var RoomsBox = require('../components/Rooms/RoomsBox');
 var localStorageHelpers = require('../utils/localStorageHelpers');
 var NotificationManager = require('react-notifications').NotificationManager
@@ -111,7 +112,7 @@ class RoomsBoxContainer extends React.Component {
                 newRoomName: ""
             });
         } else {
-            serverHelpers.addRoom(newRoom, function (isCreated) {
+            serverApiHelper.addRoom(newRoom, function (isCreated) {
                 if (isCreated) {
                     allRooms.push(newRoom);
                     this.setState({
@@ -130,13 +131,13 @@ class RoomsBoxContainer extends React.Component {
     }
 
     componentDidMount(s, d) {
-        serverHelpers.registerToNewRoom(this.newRoomNotification);
-        serverHelpers.getRooms(this.initRooms);
+        serverPupSubHelper.registerToNewRoom(this.newRoomNotification);
+        serverApiHelper.getRooms(this.initRooms);
 
     }
 
     componentWillUnmount(s, d) {
-        serverHelpers.unRegisterToNewRoom(this.newRoomNotification);
+        serverPupSubHelper.unRegisterToNewRoom(this.newRoomNotification);
     }
 }
 
