@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "dev": "set NODE_ENV=development&& webpack-dev-server",
+    "build": "set NODE_ENV=production&& webpack -p"
   },
   "author": "Amits",
   "license": "ISC",
