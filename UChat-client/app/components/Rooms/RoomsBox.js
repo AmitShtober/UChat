@@ -1,7 +1,6 @@
 var React = require('react');
 var CountableBox = require('../../components/Base/CountableBox');
 var Room = require('../../components/Rooms/Room');
-var serverHelpers = require('../../utils/serverHelpers');
 
 class RoomsBox extends React.Component {
 

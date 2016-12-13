@@ -1,6 +1,6 @@
 var React = require('react');
 var MembersBox = require('../components/Members/MembersBox');
-var serverHelpers = require('../utils/serverHelpers');
+var serverPupSubHelper = require('../utils/serverPupSubHelper');
 
 class MembersBoxContainer extends React.Component {
 	constructor(props) {
@@ -19,16 +19,16 @@ class MembersBoxContainer extends React.Component {
 	}
 
 	componentWillUnmount(s, d) {
-		serverHelpers.unRegisterToRoom(this.props.roomName, this.updataData);
+		serverPupSubHelper.unRegisterToRoom(this.props.roomName, this.updataData);
 	}
 
     componentDidMount(s, d) {
-		serverHelpers.registerToRoom(this.props.roomName, this.updataData);
+		serverPupSubHelper.registerToRoom(this.props.roomName, this.updataData);
     }
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.roomName != this.props.roomName) {
-			serverHelpers.unRegisterToRoom(this.props.roomName, this.updataData);
-			serverHelpers.registerToRoom(nextProps.roomName, this.updataData);
+			serverPupSubHelper.unRegisterToRoom(this.props.roomName, this.updataData);
+			serverPupSubHelper.registerToRoom(nextProps.roomName, this.updataData);
 		}
 	}
 	render() {

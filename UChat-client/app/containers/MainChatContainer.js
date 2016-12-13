@@ -3,7 +3,8 @@ var ReactDom = require('react-dom');
 var ReactRouter = require('react-router');
 var MainChat = require('../components/Chat/MainChat');
 var localStorageHelpers = require('../utils/localStorageHelpersMock');
-var serverHelpers = require('../utils/serverHelpers');
+var serverPupSubHelper = require('../utils/serverPupSubHelper');
+var NotificationManager = require('react-notifications').NotificationManager
 
 class MainChatContainer extends React.Component {
 
@@ -67,11 +68,11 @@ class MainChatContainer extends React.Component {
         var newMessage = this.state.newMessage;
 
         if (newMessage == '') {
-            alert('The message is empty!');
+           NotificationManager.error("You can't send an empty message!");
             return;
         }
 
-        serverHelpers.sendMessage(this.state.roomName, localStorageHelpers.getUser().user_nickname, newMessage, new Date().toLocaleString());
+        serverPupSubHelper.sendMessage(this.state.roomName, localStorageHelpers.getUser().user_nickname, newMessage, new Date().toLocaleString());
 
         this.setState({
             newMessage: "",
@@ -79,22 +80,25 @@ class MainChatContainer extends React.Component {
     }
 
     componentDidMount(s, d) {
-        serverHelpers.registerToRoom(this.state.roomName, this.updataData);
-
+        serverPupSubHelper.registerToRoom(this.state.roomName, this.updataData);
+        
         // recovery function
-        serverHelpers.recovery(this.setServerUpState, this.setServerDownState);
+        serverPupSubHelper.recovery(this.setServerUpState, this.setServerDownState);
     }
 
     componentWillUnmount(s, d) {
-        serverHelpers.unRegisterToRoom(this.state.roomName, this.updataData);
+        serverPupSubHelper.unRegisterToRoom(this.state.roomName, this.updataData);
 
         // remove recovery functions
-        serverHelpers.unRecovery(this.setServerUpState, this.setServerDownState);
+        serverPupSubHelper.unRecovery(this.setServerUpState, this.setServerDownState);
 
     }
 
     setServerUpState() {
         this.setState({ isServerUp: true });
+        
+        // make the user log to the room once again after the server was down
+        serverPupSubHelper.enterRoom(localStorageHelpers.getUser().user_nickname, this.state.roomName, "");
     }
 
     setServerDownState() {
@@ -104,10 +108,10 @@ class MainChatContainer extends React.Component {
     componentWillReceiveProps(nextProps) {
         var oldRoom = this.state.roomName;
         var newRoom = nextProps.roomName;
-        serverHelpers.unRegisterToRoom(oldRoom, this.updataData);
+        serverPupSubHelper.unRegisterToRoom(oldRoom, this.updataData);
         this.setState({ roomName: newRoom, messages: [] });
-        serverHelpers.enterRoom(localStorageHelpers.getUser().user_nickname, newRoom, oldRoom);
-        serverHelpers.registerToRoom(newRoom, this.updataData);
+        serverPupSubHelper.enterRoom(localStorageHelpers.getUser().user_nickname, newRoom, oldRoom);
+        serverPupSubHelper.registerToRoom(newRoom, this.updataData);
     }
 }
 
