@@ -1,4 +1,5 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var path = require('path');
 
 var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
     template: './app/index.html',
@@ -37,8 +38,12 @@ module.exports = {
                 test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
                 loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
             }
-
         ]
+    },
+    resolve: {
+        alias: {
+            config: path.join(__dirname, 'config', process.env.NODE_ENV + ".env.js")
+        }
     },
     plugins: [HtmlWebpackPluginConfig]
 
