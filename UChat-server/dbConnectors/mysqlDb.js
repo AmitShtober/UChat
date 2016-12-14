@@ -2,6 +2,14 @@
 
 var mysql = require('mysql');
 
+var config = require('config');
+
+if (config.has('configuration.dbConfig')) {
+    var dbConfiguration = config.get('configuration.dbConfig');
+} else {
+    throw "no configuration for:" + process.env.node_env + ". server goes down.";
+}
+
 class mysqlDb {
 
     constructor(host, user, password, dbname) {
@@ -21,7 +29,7 @@ class mysqlDb {
         });
     };
     insert(table, data, callback) {
-       this.connection.query('INSERT INTO ' + table + ' (name, description) VALUES (?,?)', [data.room, data.description], function (err, result) {
+        this.connection.query('INSERT INTO ' + table + ' (name, description) VALUES (?,?)', [data.room, data.description], function (err, result) {
             callback(err, result);
         });
     }
@@ -48,5 +56,4 @@ class mysqlDb {
 
 };
 
-module.exports = new mysqlDb('localhost', 'root', '', 'uchat');
-//module.exports = new mysqlDb('sql7.freemysqlhosting.net', 'sql7148313', 'igFUgcpE5t', 'sql7148313');
+module.exports = new mysqlDb(dbConfiguration.host, dbConfiguration.username, dbConfiguration.password, dbConfiguration.dbName);

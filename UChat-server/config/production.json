@@ -1,0 +1,10 @@
+{
+    "configuration": {
+        "dbConfig": {
+            "host": "productionHost",
+            "username": "root",
+            "password": "",
+            "dbName": "uchat"
+        }
+    }
+}
