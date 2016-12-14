@@ -1,6 +1,6 @@
 # Welcome to UChat Project
 UChat project is an open source web chat based on JS.
-The chat is mobile compatible (tested mainly on android platform).
+The chat is mobile friendly (tested mainly on android platform).
 
 ![](http://gifyu.com/images/ultrachat.gif)
 
