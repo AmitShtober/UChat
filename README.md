@@ -1,9 +1,16 @@
 # Welcome to UChat Project
 UChat project is an open source web chat based on JS.
-The chat is mobile friendly (tested mainly on android platform).
+The chat is mobile friendly (tested mainly on android platform and chrome).
 
 ![](http://gifyu.com/images/ultrachat.gif)
 
+#Features:
+1. Sending message in every room 
+2. Creating rooms and move between them (rooms are the only data which presistent and stored in MySQL)
+3. Real live notification when user left or entered the room
+4. Recovery mechanism (If the server falls)
+
+#Under the hood
 **The chat has two main components:**
 
 1. The Server - based on NodeJS (using Express and SocketIO) and MySQL Database.
@@ -30,3 +37,4 @@ The chat is mobile friendly (tested mainly on android platform).
   * open your server page on: http://localhost:1337
   
 Note for linux: if you want to run those commands, you might need to change the scripts in the package config (the set env command).
+  
