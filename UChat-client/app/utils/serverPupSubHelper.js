@@ -1,8 +1,8 @@
 require('fs');
 require('whatwg-fetch');
+var config = require('config');
 var io = require('socket.io-client');
-//var server = "http://uchat-94132.onmodulus.net";
-var server = "http://localhost:1337";
+var server = config.SERVER_URL;
 var socketio;
 
 var serverPupSubHelper = {

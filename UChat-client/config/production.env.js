@@ -1,3 +1,3 @@
 module.exports = {
-  SERVER_URL: 'http://fuckyou:1337'
+  SERVER_URL: 'http://uchat-94132.onmodulus.net'
 };
