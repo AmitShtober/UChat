@@ -2,18 +2,20 @@
 UChat project is an open source web chat based on JS.
 The chat is mobile compatible (tested mainly on android platform).
 
+![](http://gifyu.com/images/ultrachat.gif)
+
 **The chat has two main components:**
 - The Server based on NodeJS with express and socketio. why?
 Express - in order to handle the requests relevant to the room part (Add room and get rooms), and socketio in order the handle the pupsub between the users and the server (for example, when user sent a message). 
 - The client based on React and bootstrap. Big thanks to  Pavel Komiagin, on the [design](http://bootsnipp.com/snippets/ZlkBn) of the chat.
 
-1. The Server - based on NodeJS, using Express and SocketIO.
+1. The Server - based on NodeJS (using Express and SocketIO) and MySQL Database.
   * Express - in order to handle the requests relevant to the room part (Add room and get rooms)
-  * SocketIO in order the handle the pupsub between the users and the server (for example, when user sent a message). 
+  * SocketIO - in order the handle the pupsub between the users and the server (for example, when user sent a message). 
+  * **MySQL** - to store the rooms data (only the room's name and description. all of the clients data being stored in-memory by the server).
 2.  The Client based on React and Bootstrap (3.0)
   * Comes with already configured Webpack
-  * Big thanks to Pavel Komiagin for the basic chat [design](http://bootsnipp.com/snippets/ZlkBn) 
-
+  * Big thanks to Pavel Komiagin for the main chat [design](http://bootsnipp.com/snippets/ZlkBn) 
 
 # How To run?
 
