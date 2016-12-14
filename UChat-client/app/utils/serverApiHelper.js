@@ -1,9 +1,9 @@
 require('fs');
 require('whatwg-fetch');
-var serverPupSubHelper = require('./serverPupSubHelper');
+var config = require('config');
 var rest = require('restler');
-//var server = "http://uchat-94132.onmodulus.net";
-var server = "http://localhost:1337";
+var serverPupSubHelper = require('./serverPupSubHelper');
+var server = config.SERVER_URL;
 
 var serverApiHelper = {
 
