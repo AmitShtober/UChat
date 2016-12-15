@@ -1,35 +1,58 @@
 # Welcome to UChat Project
 UChat project is an open source web chat based on JS.
-The chat is mobile friendly (tested mainly on android platform).
+The chat is mobile friendly (tested mainly on android platform and chrome).
 
 ![](http://gifyu.com/images/ultrachat.gif)
 
+#Features:
+1. Brodcast message to all users in every room 
+2. Creating rooms and move between them (rooms are the only data which presistent and stored in MySQL)
+3. Real live notification when user left or entered the room
+4. Recovery mechanism (If the server falls)
+
+#Under the hood
 **The chat has two main components:**
-- The Server based on NodeJS with express and socketio. why?
-Express - in order to handle the requests relevant to the room part (Add room and get rooms), and socketio in order the handle the pupsub between the users and the server (for example, when user sent a message). 
-- The client based on React and bootstrap. Big thanks to  Pavel Komiagin, on the [design](http://bootsnipp.com/snippets/ZlkBn) of the chat.
 
 1. The Server - based on NodeJS (using Express and SocketIO) and MySQL Database.
-  * Express - in order to handle the requests relevant to the room part (Add room and get rooms)
-  * SocketIO - in order the handle the pupsub between the users and the server (for example, when user sent a message). 
-  * **MySQL** - to store the rooms data (only the room's name and description. all of the clients data being stored in-memory by the server).
+  * Express - In order to handle the requests associated with rooms (Add room and get rooms)
+  * SocketIO - In order the handle the pupsub between the users and the server (Sending a message). 
+  * **MySQL** - To store the rooms data (only the room's name and description. all of the clients data being stored in-memory inside the server).
 2.  The Client based on React and Bootstrap (3.0)
   * Comes with already configured Webpack
   * Big thanks to Pavel Komiagin for the main chat [design](http://bootsnipp.com/snippets/ZlkBn) 
 
 # How To run?
 
-1. First clone the project on your local repo.
+1. First clone the project to your local repo.
 2. Notice that there are two main folders, **server** and **client**. Both of them have a standalone npm package and you should npm install twice (for every folder).
-3. In order to run the client (windows): 
-  * open the client folder ('UChat-client/')
+3. Configuration files (dev and production environments):
+  * **client**: 'UChat-client/config' - contains the server address
+  * **server**: 'UChat-server/config' - containts the MySQL connection string
+4. In order to run the **client** (windows): 
+  * open the client folder ( 'UChat-client/')
   * type: **npm run dev** 
-  * in order to build the server in production mode into dist folder (this **will not** run a server for you), type: **npm run prod**
+    * in order to build the server on production mode into dist folder (this **will not** run a server for you), type: **npm run prod**
   * open your client page on: http://localhost:8080
-4. In order to run the server (windows): 
+5. In order to run the **server** (windows): 
   * open the client folder ('UChat-server/')
   * type: **npm run dev** 
-  * in order to build the server in production mode (this **will** run a server for you), type: **npm run prod**
+    * in order to build the server in production mode (this **will** run a server for you), type: **npm run prod**
   * open your server page on: http://localhost:1337
   
 Note for linux: if you want to run those commands, you might need to change the scripts in the package config (the set env command).
+
+#What's next?
+Well, this is only the alpha version (0.1). 
+Before it will become stable, I'm planning to add UTests to both server and the client.
+From the feature prespective:
+
+1. Adding the option to delete or rename room
+2. Adding control panel for managment
+3. Adding logs (maybe use elasticsearch or splunk)
+
+#Contribute
+Well, I would love that. Just ask to pull request and I will review your code.
+If thoses changes are core wise, please pm me first. Thank you.
+
+
+  
