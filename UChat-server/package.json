@@ -1,0 +1,22 @@
+{
+  "name": "uchatserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "set NODE_ENV=development&& nodemon server.js",
+	"prod": "set NODE_ENV=production&& nodemon server.js"
+  },
+  "author": "amits",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "config": "^1.24.0",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "mongoose": "^4.6.6",
+    "mysql": "^2.12.0",
+    "socket.io": "^1.5.1",
+    "underscore": "^1.8.3"
+  }
+}
