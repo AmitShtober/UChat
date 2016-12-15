@@ -23,14 +23,17 @@ The chat is mobile friendly (tested mainly on android platform and chrome).
 
 # How To run?
 
-1. First clone the project on your local repo.
+1. First clone the project to your local repo.
 2. Notice that there are two main folders, **server** and **client**. Both of them have a standalone npm package and you should npm install twice (for every folder).
-3. In order to run the client (windows): 
-  * open the client folder ('UChat-client/')
+3. configuration files (dev and production are inside):
+  * **client**: 'UChat-client/config' - contains the server address
+  * **server**: 'UChat-server/config' - containts the MySQL connection string
+4. In order to run the **client** (windows): 
+  * open the client folder ( 'UChat-client/')
   * type: **npm run dev** 
     * in order to build the server on production mode into dist folder (this **will not** run a server for you), type: **npm run prod**
   * open your client page on: http://localhost:8080
-4. In order to run the server (windows): 
+5. In order to run the **server** (windows): 
   * open the client folder ('UChat-server/')
   * type: **npm run dev** 
     * in order to build the server in production mode (this **will** run a server for you), type: **npm run prod**
