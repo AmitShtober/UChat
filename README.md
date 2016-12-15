@@ -14,9 +14,9 @@ The chat is mobile friendly (tested mainly on android platform and chrome).
 **The chat has two main components:**
 
 1. The Server - based on NodeJS (using Express and SocketIO) and MySQL Database.
-  * Express - In order to handle the requests שssociated with rooms (Add room and get rooms)
+  * Express - In order to handle the requests associated with rooms (Add room and get rooms)
   * SocketIO - In order the handle the pupsub between the users and the server (Sending a message). 
-  * **MySQL** - To store the rooms data (only the room's name and description. all of the clients data being stored in-memory by the server).
+  * **MySQL** - To store the rooms data (only the room's name and description. all of the clients data being stored in-memory inside the server).
 2.  The Client based on React and Bootstrap (3.0)
   * Comes with already configured Webpack
   * Big thanks to Pavel Komiagin for the main chat [design](http://bootsnipp.com/snippets/ZlkBn) 
@@ -25,7 +25,7 @@ The chat is mobile friendly (tested mainly on android platform and chrome).
 
 1. First clone the project to your local repo.
 2. Notice that there are two main folders, **server** and **client**. Both of them have a standalone npm package and you should npm install twice (for every folder).
-3. configuration files (dev and production are inside):
+3. Configuration files (dev and production environments):
   * **client**: 'UChat-client/config' - contains the server address
   * **server**: 'UChat-server/config' - containts the MySQL connection string
 4. In order to run the **client** (windows): 
@@ -43,12 +43,12 @@ Note for linux: if you want to run those commands, you might need to change the 
 
 #What's next?
 Well, this is only the alpha version (0.1). 
-Before it will become stable, I'm planning to add UTests to both the server and the client.
+Before it will become stable, I'm planning to add UTests to both server and the client.
 From the feature prespective:
 
-1. adding the option to delete or rename room
-2. adding control panel for managment
-3. adding logs (maybe use elasticsearch or splunk)
+1. Adding the option to delete or rename room
+2. Adding control panel for managment
+3. Adding logs (maybe use elasticsearch or splunk)
 
 #Contribute
 Well, I would love that. Just ask to pull request and I will review your code.
