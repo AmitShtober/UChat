@@ -1,4 +1,4 @@
-# Welcome to UChat Project
+# Welcome to UChat Project (Alpha version 0.1 is Out!)
 UChat project is an open source web chat based on JS.
 The chat is mobile friendly (tested mainly on android platform and chrome).
 
