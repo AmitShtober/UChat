@@ -5,7 +5,7 @@ The chat is mobile friendly (tested mainly on android platform and chrome).
 ![](http://gifyu.com/images/ultrachat.gif)
 
 #Features:
-1. Sending message in every room 
+1. Brodcast message to all users in every room 
 2. Creating rooms and move between them (rooms are the only data which presistent and stored in MySQL)
 3. Real live notification when user left or entered the room
 4. Recovery mechanism (If the server falls)
@@ -37,4 +37,19 @@ The chat is mobile friendly (tested mainly on android platform and chrome).
   * open your server page on: http://localhost:1337
   
 Note for linux: if you want to run those commands, you might need to change the scripts in the package config (the set env command).
+
+#What's next?
+Well, this is only the alpha version (0.1). 
+Before it will become stable, I'm planning to add UTests to both the server and the client.
+From the feature prespective:
+
+1. adding the option to delete or rename room
+2. adding control panel for managment
+3. adding logs (maybe use elasticsearch or splunk)
+
+#Contribute
+Well, I would love that. Just ask to pull request and I will review your code.
+If thoses changes are core wise, please pm me first. Thank you.
+
+
   
