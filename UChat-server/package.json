@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+	"test":"mocha",
     "dev": "set NODE_ENV=development&& nodemon server.js",
 	"prod": "set NODE_ENV=production&& nodemon server.js"
   },
