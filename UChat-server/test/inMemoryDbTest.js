@@ -23,14 +23,7 @@ describe('in memory db rooms prop should have initial state', function () {
         db = require('../dbConnectors/inMemoryDb');
     });
 
-    it('db rooms prop should have only one item ', function () {
-        assert(db.rooms.length == 1);
-    });
-
-    it('db rooms prop should containts lobby', function () {
-        assert(db.rooms[0] != undefined) &&
-            assert(db.rooms[0].roomName == "lobby") &&
-            assert(db.rooms[0].description == "main lobby") &&
-            assert(db.rooms[0].clients === []);
+    it('db rooms prop should have zero items ', function () {
+        assert(db.rooms.length == 0);
     });
 });
